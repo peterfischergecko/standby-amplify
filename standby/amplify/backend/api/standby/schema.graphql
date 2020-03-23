@@ -1,5 +1,56 @@
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
+# TYPES
+
+type Team @model {
+    id: ID!
+    name: String!
+    members: [Member!]! @connection(keyName: "byTeam", fields: ["id"])
+}
+
+type Member @model 
+@key(name: "byTeam", fields: ["teamID"])
+{
+    id: ID!
+    teamID: ID!
+    name: String!  
+    personID: ID! 
+    person: Person! @connection(fields: ["personID"])
+    assignments: [Assignment!]! @connection(keyName: "assignmentByMember", fields: ["id"])
+}
+
+type Assignment @model 
+@key(name: "assignmentByMember", fields: ["memberID"])
+{
+    id: ID!
+    memberID: ID!
+    date: AWSDate!
+    type: AssignmentType! 
+}
+
+type Person @model 
+{
+    id: ID!    
+    firstname: String!
+    lastname: String!
+    email: String! 
+    unavailabilities: [Unavailability!]! @connection(keyName: "unavalabilityByPerson", fields: ["id"])
+}
+
+type Unavailability @model 
+@key(name: "unavalabilityByPerson", fields: ["personID"])
+{
+    id: ID!
+    personID: ID! 
+    date: AWSDate!
+    type: UnavailabilityType!
+}
+
+# ENUMS
+
+enum AssignmentType {
+    RUFBEREITSCHAFT
+}
+
+enum UnavailabilityType {
+    VACATION
+    SICKNESS
 }

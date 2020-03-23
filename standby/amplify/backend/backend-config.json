@@ -10,7 +10,7 @@
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
 							"description": "standby-api-key",
-							"apiKeyExpirationDays": "365"
+							"apiKeyExpirationDays": 7
 						}
 					}
 				}
