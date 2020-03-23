@@ -372,6 +372,11 @@
   <h2>Next Steps</h2>
   <p>What do you want to do next with your app?</p>
 
+  <button (click)="createTodo()">Add Todo</button>
+  <ul>
+    <li *ngFor="let item of todos">{{item.name}} - {{item.description}}</li>
+  </ul>
+
   <input type="hidden" #selection>
 
   <div class="card-container">
