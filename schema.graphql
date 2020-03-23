@@ -1,0 +1,71 @@
+# TYPES
+
+type Team {
+    id: ID!
+    name: String!
+    leader: Member!
+    members: [Member!]!
+}
+
+type Member {
+    person: Person!
+    team: Team!
+    assignments: [Assignment!]!
+}
+
+type Assignment {
+    id: ID!
+    date: Date!
+    type: AssignmentType! 
+    member: Member!
+}
+
+type Person {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    email: String! @defaultValue(value: "info@gecko.de")
+    unavailabilities: [Unavailability!]!    
+}
+
+type Unavailability {
+    id: ID!
+    date: Date!
+    type: UnavailabilityType!
+    person: Person!
+}
+
+# ENUMS
+
+enum AssignmentType {
+    RUFBEREITSCHAFT
+}
+
+enum UnavailabilityType {
+    VACATION
+    SICKNESS
+}
+
+# QUERIES
+
+type Query{
+    allTeams(last: Int): [Team!]!
+    allMembers(last: Int): [Member!]!
+    allAssignments(last: int): [Assignment!]!
+}
+
+# MUTATIONS
+
+type Mutation {
+    createPerson(firstname: String!, lastname: String!, email: String!, unavailabilities: [Unavailability!]): Person!
+    updatePerson(id: ID!, firstname: String!, lastname: String!, email: String!, unavailabilities: [Unavailability!]): Person!
+    deletePerson(id: ID!): Person!
+}
+
+# SUBSCRIPTIONS
+
+type Subscriptions {
+    newPerson: Person!
+    updatedPerson: Person!
+    deletedPerson: Person!
+}
