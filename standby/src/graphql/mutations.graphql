@@ -1,31 +1,268 @@
 # this is an auto generated file. This will be overwritten
-mutation CreateTodo(
-  $input: CreateTodoInput!
-  $condition: ModelTodoConditionInput
+mutation CreateTeam(
+  $input: CreateTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  createTodo(input: $input, condition: $condition) {
+  createTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
   }
 }
-mutation UpdateTodo(
-  $input: UpdateTodoInput!
-  $condition: ModelTodoConditionInput
+mutation UpdateTeam(
+  $input: UpdateTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  updateTodo(input: $input, condition: $condition) {
+  updateTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
   }
 }
-mutation DeleteTodo(
-  $input: DeleteTodoInput!
-  $condition: ModelTodoConditionInput
+mutation DeleteTeam(
+  $input: DeleteTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  deleteTodo(input: $input, condition: $condition) {
+  deleteTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
+  }
+}
+mutation CreateMember(
+  $input: CreateMemberInput!
+  $condition: ModelMemberConditionInput
+) {
+  createMember(input: $input, condition: $condition) {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation UpdateMember(
+  $input: UpdateMemberInput!
+  $condition: ModelMemberConditionInput
+) {
+  updateMember(input: $input, condition: $condition) {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation DeleteMember(
+  $input: DeleteMemberInput!
+  $condition: ModelMemberConditionInput
+) {
+  deleteMember(input: $input, condition: $condition) {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation CreateAssignment(
+  $input: CreateAssignmentInput!
+  $condition: ModelAssignmentConditionInput
+) {
+  createAssignment(input: $input, condition: $condition) {
+    id
+    memberID
+    date
+    type
+  }
+}
+mutation UpdateAssignment(
+  $input: UpdateAssignmentInput!
+  $condition: ModelAssignmentConditionInput
+) {
+  updateAssignment(input: $input, condition: $condition) {
+    id
+    memberID
+    date
+    type
+  }
+}
+mutation DeleteAssignment(
+  $input: DeleteAssignmentInput!
+  $condition: ModelAssignmentConditionInput
+) {
+  deleteAssignment(input: $input, condition: $condition) {
+    id
+    memberID
+    date
+    type
+  }
+}
+mutation CreatePerson(
+  $input: CreatePersonInput!
+  $condition: ModelPersonConditionInput
+) {
+  createPerson(input: $input, condition: $condition) {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation UpdatePerson(
+  $input: UpdatePersonInput!
+  $condition: ModelPersonConditionInput
+) {
+  updatePerson(input: $input, condition: $condition) {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation DeletePerson(
+  $input: DeletePersonInput!
+  $condition: ModelPersonConditionInput
+) {
+  deletePerson(input: $input, condition: $condition) {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+mutation CreateUnavailability(
+  $input: CreateUnavailabilityInput!
+  $condition: ModelUnavailabilityConditionInput
+) {
+  createUnavailability(input: $input, condition: $condition) {
+    id
+    personID
+    date
+    type
+  }
+}
+mutation UpdateUnavailability(
+  $input: UpdateUnavailabilityInput!
+  $condition: ModelUnavailabilityConditionInput
+) {
+  updateUnavailability(input: $input, condition: $condition) {
+    id
+    personID
+    date
+    type
+  }
+}
+mutation DeleteUnavailability(
+  $input: DeleteUnavailabilityInput!
+  $condition: ModelUnavailabilityConditionInput
+) {
+  deleteUnavailability(input: $input, condition: $condition) {
+    id
+    personID
+    date
+    type
   }
 }

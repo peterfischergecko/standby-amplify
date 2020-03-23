@@ -1,22 +1,223 @@
 # this is an auto generated file. This will be overwritten
-subscription OnCreateTodo {
-  onCreateTodo {
+subscription OnCreateTeam {
+  onCreateTeam {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
   }
 }
-subscription OnUpdateTodo {
-  onUpdateTodo {
+subscription OnUpdateTeam {
+  onUpdateTeam {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
   }
 }
-subscription OnDeleteTodo {
-  onDeleteTodo {
+subscription OnDeleteTeam {
+  onDeleteTeam {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
+  }
+}
+subscription OnCreateMember {
+  onCreateMember {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnUpdateMember {
+  onUpdateMember {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnDeleteMember {
+  onDeleteMember {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnCreateAssignment {
+  onCreateAssignment {
+    id
+    memberID
+    date
+    type
+  }
+}
+subscription OnUpdateAssignment {
+  onUpdateAssignment {
+    id
+    memberID
+    date
+    type
+  }
+}
+subscription OnDeleteAssignment {
+  onDeleteAssignment {
+    id
+    memberID
+    date
+    type
+  }
+}
+subscription OnCreatePerson {
+  onCreatePerson {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnUpdatePerson {
+  onUpdatePerson {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnDeletePerson {
+  onDeletePerson {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+subscription OnCreateUnavailability {
+  onCreateUnavailability {
+    id
+    personID
+    date
+    type
+  }
+}
+subscription OnUpdateUnavailability {
+  onUpdateUnavailability {
+    id
+    personID
+    date
+    type
+  }
+}
+subscription OnDeleteUnavailability {
+  onDeleteUnavailability {
+    id
+    personID
+    date
+    type
   }
 }

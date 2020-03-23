@@ -372,9 +372,9 @@
   <h2>Next Steps</h2>
   <p>What do you want to do next with your app?</p>
 
-  <button (click)="createTodo()">Add Todo</button>
+  <button (click)="createPerson()">Add Person</button>
   <ul>
-    <li *ngFor="let item of todos">{{item.name}} - {{item.description}}</li>
+    <li *ngFor="let item of persons">{{item.id}} - {{item.firstname}} - {{item.lastname}}</li>
   </ul>
 
   <input type="hidden" #selection>

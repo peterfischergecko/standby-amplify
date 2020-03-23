@@ -8,25 +8,22 @@ import { APIService } from './API.service';
 })
 export class AppComponent implements OnInit {
   title = 'standby';
-  todos: Array<any>;
+  persons: Array<any>;
 
   constructor(private apiService: APIService) {}
 
   async ngOnInit() {
-    this.apiService.ListTodos().then((evt) => {
-      this.todos = evt.items;
+    this.apiService.ListPersons().then((evt) => {
+      this.persons = evt.items;
     });
 
-    this.apiService.OnCreateTodoListener.subscribe((evt) => {
-      const data = (evt as any).value.data.onCreateTodo;
-      this.todos = [...this.todos, data];
+    this.apiService.OnCreatePersonListener.subscribe((evt) => {
+      const data = evt;
+      this.persons = [...this.persons, data];
     });
   }
 
-  createTodo() {
-    this.apiService.CreateTodo({
-        name: 'Angular',
-        description: 'testing'
-    });
+  createPerson() {
+    this.apiService.CreatePerson({firstname: "bob", lastname: "ballermann", email: "bob@ballermann.de"})
   }
 }

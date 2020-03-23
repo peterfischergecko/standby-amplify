@@ -1,21 +1,162 @@
 # this is an auto generated file. This will be overwritten
-query GetTodo($id: ID!) {
-  getTodo(id: $id) {
+query GetTeam($id: ID!) {
+  getTeam(id: $id) {
     id
     name
-    description
+    members {
+      items {
+        id
+        teamID
+        name
+        personID
+      }
+      nextToken
+    }
   }
 }
-query ListTodos(
-  $filter: ModelTodoFilterInput
+query ListTeams(
+  $filter: ModelTeamFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTeams(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       name
-      description
+      members {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+query GetMember($id: ID!) {
+  getMember(id: $id) {
+    id
+    teamID
+    name
+    personID
+    person {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    assignments {
+      items {
+        id
+        memberID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+query ListMembers(
+  $filter: ModelMemberFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMembers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      teamID
+      name
+      personID
+      person {
+        id
+        firstname
+        lastname
+        email
+      }
+      assignments {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+query GetAssignment($id: ID!) {
+  getAssignment(id: $id) {
+    id
+    memberID
+    date
+    type
+  }
+}
+query ListAssignments(
+  $filter: ModelAssignmentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listAssignments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      memberID
+      date
+      type
+    }
+    nextToken
+  }
+}
+query GetPerson($id: ID!) {
+  getPerson(id: $id) {
+    id
+    firstname
+    lastname
+    email
+    unavailabilities {
+      items {
+        id
+        personID
+        date
+        type
+      }
+      nextToken
+    }
+  }
+}
+query ListPersons(
+  $filter: ModelPersonFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPersons(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      firstname
+      lastname
+      email
+      unavailabilities {
+        nextToken
+      }
+    }
+    nextToken
+  }
+}
+query GetUnavailability($id: ID!) {
+  getUnavailability(id: $id) {
+    id
+    personID
+    date
+    type
+  }
+}
+query ListUnavailabilitys(
+  $filter: ModelUnavailabilityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUnavailabilitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      personID
+      date
+      type
     }
     nextToken
   }
