@@ -16,5 +16,13 @@
 				}
 			}
 		}
+	},
+	"auth": {
+		"standby18422199": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
 	}
 }

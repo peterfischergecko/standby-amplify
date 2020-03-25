@@ -10,6 +10,11 @@
             "StackName": "amplify-standby-test-103353",
             "StackId": "arn:aws:cloudformation:eu-central-1:683654936095:stack/amplify-standby-test-103353/69dfb5f0-6ce9-11ea-864f-06566fed0c82",
             "AmplifyAppId": "dsp1huz4pp8c0"
+        },
+        "categories": {
+            "auth": {
+                "standby18422199": {}
+            }
         }
     }
 }
