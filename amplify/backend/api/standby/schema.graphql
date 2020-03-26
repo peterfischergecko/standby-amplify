@@ -1,13 +1,15 @@
 # TYPES
 
-type Team @model {
+type Team @model 
+@auth (rules: [{ allow: private }]) {
     id: ID!
     name: String!
     members: [Member!]! @connection(keyName: "byTeam", fields: ["id"])
 }
 
 type Member @model 
-@key(name: "byTeam", fields: ["teamID"])
+@key(name: "byTeam", fields: ["teamID"]) 
+@auth (rules: [{ allow: private }])
 {
     id: ID!
     teamID: ID!
@@ -18,7 +20,8 @@ type Member @model
 }
 
 type Assignment @model 
-@key(name: "assignmentByMember", fields: ["memberID"])
+@key(name: "assignmentByMember", fields: ["memberID"]) 
+@auth (rules: [{ allow: private }])
 {
     id: ID!
     memberID: ID!
@@ -27,6 +30,7 @@ type Assignment @model
 }
 
 type Person @model 
+@auth (rules: [{ allow: private }])
 {
     id: ID!    
     firstname: String!
@@ -36,7 +40,8 @@ type Person @model
 }
 
 type Unavailability @model 
-@key(name: "unavalabilityByPerson", fields: ["personID"])
+@key(name: "unavalabilityByPerson", fields: ["personID"]) 
+@auth (rules: [{ allow: private }])
 {
     id: ID!
     personID: ID! 
