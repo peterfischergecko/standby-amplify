@@ -8,10 +8,6 @@ The project consists mainly of an Angular Material single page application and a
 ## How to run it
 
 * [AWS Amplify CLI] - Howto Setup the Amplify CLI
-* check out the repo
-* cd into standby dir
-* npm ci
-* amplify pull
-* ng serve
+* amplify init --app https://github.com/peterfischergecko/standby-amplify
 
 [AWS Amplify CLI]: <https://aws-amplify.github.io/docs/>
