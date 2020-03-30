@@ -1,0 +1,42 @@
+<div class="container">
+    <form [formGroup]="signInForm">
+        <mat-card class="mat-elevation-z8">
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-evenly">
+                <mat-card-header>
+                    <div mat-card-avatar><mat-icon class="md-48">schedule</mat-icon></div>
+                    <mat-card-title>
+                        GECKO | Standby Planner
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                        Sign In
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-form-field appearance="outline">
+                    <input matInput type="email" placeholder="Email" formControlName="email" autocomplete="email" required>
+                    <mat-hint *ngIf="!emailInput.value">Enter your email address</mat-hint>
+                    <mat-error *ngIf="!emailInput.valid">{{getEmailInputError()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input matInput placeholder="{{newPasswordRequired ? 'New Password' : 'Password'}}" [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-hint *ngIf="!passwordInput.value">Enter your password</mat-hint>
+                    <mat-error *ngIf="!passwordInput.valid">{{getPasswordInputError()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="newPasswordRequired" appearance="outline">
+                    <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" [errorStateMatcher]="passwordErrorStateMatcher" required>
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-hint *ngIf="!confirmPasswordInput.value">Confirm your password</mat-hint>
+                    <mat-error *ngIf="!confirmPasswordInput.valid">{{getConfirmPasswordInputError()}}</mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="signIn()" [disabled]="!signInForm.valid">
+                    <div fxLayout="row" style="align-items: center;">
+                        {{newPasswordRequired ? 'Save & Sign In' : 'Sign In'}}
+                        <mat-spinner *ngIf="loading" diameter="25" style="margin-left: 10px;"></mat-spinner>
+                    </div>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

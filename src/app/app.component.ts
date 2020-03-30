@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from './API.service';
+import Auth from '@aws-amplify/auth';
+import { AuthService } from './services/auth.service';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +13,14 @@ export class AppComponent implements OnInit {
   title = 'standby';
   persons: Array<any>;
 
-  constructor(private apiService: APIService) {}
+  constructor(
+    public authService: AuthService,
+    private apiService: APIService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+  }
+
+  subscribePersons() {
     this.apiService.ListPersons().then((evt) => {
       this.persons = evt.items;
     });
@@ -21,9 +29,5 @@ export class AppComponent implements OnInit {
       const data = evt;
       this.persons = [...this.persons, data];
     });
-  }
-
-  createPerson() {
-    this.apiService.CreatePerson({firstname: "bob", lastname: "ballermann", email: "bob@ballermann.de"})
   }
 }
