@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from 'ngx-strongly-typed-forms';
+import { Validators } from '@angular/forms';
 import { AuthService } from './../../services/auth.service';
 import { Router } from '@angular/router';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import Auth from '@aws-amplify/auth';
 import { PasswordErrorStateMatcher } from 'src/app/helper/password-error-state-matcher';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ISignInUser } from 'src/app/models/signinuser';
 
 export enum SignInErrorResponse {
     NotAuthorizedException = 'NotAuthorizedException',
@@ -20,7 +22,7 @@ export enum SignInErrorResponse {
     styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent {
-    signInForm: FormGroup;
+    signInForm: FormGroup<ISignInUser>;
 
     hide = true;
     loading = false;
@@ -37,8 +39,8 @@ export class SignInComponent {
         private router: Router,
         private formBuilder: FormBuilder,
         private notificationService: NotificationService) {
-        this.signInForm = this.formBuilder.group({
-            email: new FormControl('', [Validators.required]),
+        this.signInForm = this.formBuilder.group<ISignInUser>({
+            email: new FormControl('', Validators.required),
             password: new FormControl('', [Validators.required, Validators.min(6)])
         });
     }
@@ -92,7 +94,7 @@ export class SignInComponent {
                         user.challengeName === 'SOFTWARE_TOKEN_MFA') {
                         console.log('UNHANDLED CHALLANGE => ' + user.challengeName);
                     } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                        this.signInForm = this.formBuilder.group({
+                        this.signInForm = this.formBuilder.group<ISignInUser>({
                             email: new FormControl(this.emailInput.value , [Validators.required]),
                             password: new FormControl('', [Validators.required, Validators.min(6)]),
                             confirmPassword: new FormControl('', [Validators.required, Validators.min(6)])
@@ -109,7 +111,7 @@ export class SignInComponent {
         }
     }
 
-    passwordsEqual(group: FormGroup) {
+    passwordsEqual(group: FormGroup<ISignInUser>) {
         const pass = group.controls.password.value;
         const confirmPass = group.controls.confirmPassword.value;
 
