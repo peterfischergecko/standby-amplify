@@ -1,33 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { APIService } from './API.service';
-import Auth from '@aws-amplify/auth';
-import { AuthService } from './services/auth.service';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UserFacade } from './services/user/user.facade';
+import { Observable, Subject, pipe } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'standby';
-  persons: Array<any>;
+  authenticated$: Observable<boolean> = this.userFacade.isAuthenticated$;
+  newPasswordRequired$: Observable<boolean> = this.userFacade.newPasswordRequired$;
+  authenticated: boolean;
+  newPasswordRequired: boolean;
+  onDestroy = new Subject();
 
-  constructor(
-    public authService: AuthService,
-    private apiService: APIService) { }
+  constructor(private userFacade: UserFacade) {
 
-  ngOnInit() {
   }
 
-  subscribePersons() {
-    this.apiService.ListPersons().then((evt) => {
-      this.persons = evt.items;
-    });
+  ngOnInit(): void {
+    this.authenticated = this.userFacade.getStateSnapshot().isAuthenticated;
+    this.newPasswordRequired = this.userFacade.getStateSnapshot().newPasswordRequired;
+    this.authenticated$
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe(value => {
+        this.authenticated = value;
+      });
 
-    this.apiService.OnCreatePersonListener.subscribe((evt) => {
-      const data = evt;
-      this.persons = [...this.persons, data];
-    });
+    this.newPasswordRequired$
+        .pipe(takeUntil(this.onDestroy))
+        .subscribe(value => {
+          this.newPasswordRequired = value;
+        });
   }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+  }
+
 }

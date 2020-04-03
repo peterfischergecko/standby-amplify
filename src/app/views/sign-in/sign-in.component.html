@@ -22,18 +22,22 @@
                     <mat-hint *ngIf="!passwordInput.value">Enter your password</mat-hint>
                     <mat-error *ngIf="!passwordInput.valid">{{getPasswordInputError()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field *ngIf="newPasswordRequired" appearance="outline">
+                <mat-form-field *ngIf="(userFacade.newPasswordRequired$ | async)" appearance="outline">
                     <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" [errorStateMatcher]="passwordErrorStateMatcher" required>
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-hint *ngIf="!confirmPasswordInput.value">Confirm your password</mat-hint>
                     <mat-error *ngIf="!confirmPasswordInput.valid">{{getConfirmPasswordInputError()}}</mat-error>
                 </mat-form-field>
+                <div class="info-box" *ngIf="(userFacade.newPasswordRequired$ | async)" fxLayout="row">
+                    <mat-icon style="color: red; margin-right: 10px;">info</mat-icon>
+                    <span>Password reset is required.</span>
+                </div>
             </mat-card-content>
             <mat-card-actions>
                 <button mat-raised-button (click)="signIn()" [disabled]="!signInForm.valid">
                     <div fxLayout="row" style="align-items: center;">
-                        {{newPasswordRequired ? 'Save & Sign In' : 'Sign In'}}
-                        <mat-spinner *ngIf="loading" diameter="25" style="margin-left: 10px;"></mat-spinner>
+                        {{(userFacade.newPasswordRequired$ | async) ? 'Save & Sign In' : 'Sign In'}}
+                        <mat-spinner *ngIf="(this.userFacade.loading$ | async)" diameter="25" style="margin-left: 10px;"></mat-spinner>
                     </div>
                 </button>
             </mat-card-actions>

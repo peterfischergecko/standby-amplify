@@ -18,15 +18,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatStepperModule } from '@angular/material/stepper';
 
 import { SignInComponent } from './views/sign-in/sign-in.component';
 import { HomeComponent } from './views/home/home.component';
-import { AuthService } from './services/auth.service';
 import { AppNavComponent } from './app-nav/app-nav.component';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
+import { RegistrationComponent } from './views/registration/registration.component';
+
+import { UserFacade } from './services/user/user.facade';
+
+
+
 
 
 
@@ -35,7 +41,8 @@ import { MatListModule } from '@angular/material/list';
     AppComponent,
     HomeComponent,
     SignInComponent,
-    AppNavComponent
+    AppNavComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,9 +63,10 @@ import { MatListModule } from '@angular/material/list';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    NgxStronglyTypedFormsModule
+    NgxStronglyTypedFormsModule,
+    MatStepperModule,
   ],
-  providers: [AuthService],
+  providers: [UserFacade],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

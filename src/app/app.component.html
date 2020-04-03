@@ -1,4 +1,4 @@
 <div class="app-container">
-    <app-sign-in *ngIf="!authService.LoggedIn"></app-sign-in>
-    <app-nav *ngIf="authService.LoggedIn"></app-nav>
+    <app-sign-in *ngIf="!authenticated || newPasswordRequired"></app-sign-in>
+    <app-nav *ngIf="authenticated && !newPasswordRequired"></app-nav>
 </div>

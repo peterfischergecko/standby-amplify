@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SignInComponent } from './views/sign-in/sign-in.component';
-import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './views/home/home.component';
+import { RegistrationComponent } from './views/registration/registration.component';
 
 
 const routes: Routes = [
-  { path: 'auth/signin', component: SignInComponent },
-  {path: '**', component: HomeComponent, canActivate: [AuthGuard]}
+  {
+    path: 'auth', children: [
+      { path: 'registration', component: RegistrationComponent, canActivate: [AuthGuard] }
+    ]
+  },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'auth/signin' }
 ];
 
 @NgModule({

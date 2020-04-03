@@ -21,6 +21,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>standby</span>
+      <button (click)="userFacade.signOut()">Sign Out</button>
     </mat-toolbar>
     <router-outlet class="component-container"></router-outlet>
   </mat-sidenav-content>

@@ -10,11 +10,16 @@ mat-card {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    height: 35vh;
+    height: 40vh;
     width: 25vw;
 }
 
 mat-card-content {
     display: flex;
     flex: 1;
+}
+
+.info-box {
+    align-items: center;
+    margin-top: 15px;
 }
