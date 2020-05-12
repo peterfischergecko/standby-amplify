@@ -25,7 +25,7 @@ export class SignInComponent implements OnInit, OnDestroy {
     signInForm: FormGroup<ISignInUser>;
 
     hide = true;
-    newPasswordRequired: boolean;
+    newPasswordRequired = false;
     passwordErrorStateMatcher = new PasswordErrorStateMatcher();
 
     onDestroy = new Subject();
@@ -61,6 +61,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         this.userFacade.newPasswordRequired$
             .pipe(takeUntil(this.onDestroy))
             .subscribe((required) => {
+                this.newPasswordRequired = required;
                 if (required) {
                     this.signInForm = this.formBuilder.group<ISignInUser>({
                         email: new FormControl(this.emailInput.value , [Validators.required]),
@@ -102,43 +103,11 @@ export class SignInComponent implements OnInit, OnDestroy {
     }
 
     signIn() {
-        this.userFacade.signIn(this.emailInput.value, this.passwordInput.value);
-
-        // if (this.newPasswordRequired && this.currentUser) {
-        //     try {
-        //         const result = await Auth.completeNewPassword(this.currentUser, this.confirmPasswordInput.value, {});
-        //         console.log(result);
-        //         this.router.navigate(['home']);
-        //     } catch (error) {
-        //         this.notificationService.show(error);
-        //     }
-
-        //     this.loading = false;
-        // } else {
-
-        //     this.auth.signIn(this.emailInput.value, this.passwordInput.value)
-        //         .then((user: CognitoUser | any) => {
-        //             this.currentUser = user;
-        //             console.log(user);
-        //             if (user.challengeName === 'SMS_MFA' ||
-        //                 user.challengeName === 'SOFTWARE_TOKEN_MFA') {
-        //                 console.log('UNHANDLED CHALLANGE => ' + user.challengeName);
-        //             } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-        //                 this.signInForm = this.formBuilder.group<ISignInUser>({
-        //                     email: new FormControl(this.emailInput.value , [Validators.required]),
-        //                     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-        //                     confirmPassword: new FormControl('', [Validators.required])
-        //                 }, { validator: this.passwordsEqual });
-        //                 this.newPasswordRequired = true;
-        //             }
-        //             this.loading = false;
-        //             this.router.navigate(['home']);
-        //         })
-        //         .catch((error: any) => {
-        //             this.notificationService.show(error.message);
-        //             this.loading = false;
-        //         });
-        // }
+        if (this.newPasswordRequired) {
+            this.userFacade.completeNewPassword(this.passwordInput.value, {});
+        } else {
+            this.userFacade.signIn(this.emailInput.value, this.passwordInput.value);
+        }
     }
 
     passwordsEqual(group: FormGroup<ISignInUser>) {

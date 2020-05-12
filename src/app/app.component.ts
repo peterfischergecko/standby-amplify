@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authenticated = this.userFacade.getStateSnapshot().isAuthenticated;
     this.newPasswordRequired = this.userFacade.getStateSnapshot().newPasswordRequired;
+
     this.authenticated$
       .pipe(takeUntil(this.onDestroy))
       .subscribe(value => {

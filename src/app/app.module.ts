@@ -27,7 +27,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { SignInComponent } from './views/sign-in/sign-in.component';
 import { HomeComponent } from './views/home/home.component';
 import { AppNavComponent } from './app-nav/app-nav.component';
-import { RegistrationComponent } from './views/registration/registration.component';
 
 import { UserFacade } from './services/user/user.facade';
 
@@ -42,7 +41,6 @@ import { UserFacade } from './services/user/user.facade';
     HomeComponent,
     SignInComponent,
     AppNavComponent,
-    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
