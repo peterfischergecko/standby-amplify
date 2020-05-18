@@ -1,0 +1,25 @@
+.container {
+    height: 100%; 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+mat-card {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 40vh;
+    width: 25vw;
+}
+
+mat-card-content {
+    display: flex;
+    flex: 1;
+}
+
+.info-box {
+    align-items: center;
+    margin-top: 15px;
+}

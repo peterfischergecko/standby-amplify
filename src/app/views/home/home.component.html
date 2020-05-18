@@ -1,0 +1,6 @@
+<div class="component-container">
+  <button mat-raised-button (click)="createPerson()">Add Person</button>
+  <ul>
+    <li *ngFor="let item of persons">{{item.id}} - {{item.firstname}} - {{item.lastname}}</li>
+  </ul> 
+</div>
