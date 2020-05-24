@@ -30,6 +30,7 @@ import { AppNavComponent } from './app-nav/app-nav.component';
 
 import { UserFacade } from './services/user/user.facade';
 import { UserProfileComponent } from './views/user-profile/user-profile/user-profile.component';
+import { UserProfileFacade } from './services/user-profile/user-profile.facade';
 
 
 
@@ -66,7 +67,7 @@ import { UserProfileComponent } from './views/user-profile/user-profile/user-pro
     NgxStronglyTypedFormsModule,
     MatStepperModule,
   ],
-  providers: [UserFacade],
+  providers: [UserFacade, UserProfileFacade],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
