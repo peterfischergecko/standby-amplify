@@ -8,21 +8,21 @@ import { APIService } from './../../API.service';
 })
 export class HomeComponent implements OnInit {
   title = 'standby';
-  persons: Array<any>;
+  teams: Array<any>;
 
   constructor(private apiService: APIService) {}
 
   async ngOnInit() {
-    this.apiService.ListPersons().then((evt) => {
-      this.persons = evt.items;
+    this.apiService.ListTeams().then((evt) => {
+      this.teams = evt.items;
     });
 
-    this.apiService.OnCreatePersonListener.subscribe((evt) => {
+    this.apiService.OnCreateTeamListener.subscribe((evt) => {
       const data = evt;
-      this.persons = [...this.persons, data];
+      this.teams = [...this.teams, data];
     });
     }
-    createPerson() {
-        this.apiService.CreatePerson({firstname: 'bob', lastname: 'ballermann', email: 'bob@ballermann.de'});
+    createTeam(teamName : string = 'default') {
+        this.apiService.CreateTeam({name: teamName});
       }
 }
