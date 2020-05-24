@@ -29,6 +29,7 @@ import { HomeComponent } from './views/home/home.component';
 import { AppNavComponent } from './app-nav/app-nav.component';
 
 import { UserFacade } from './services/user/user.facade';
+import { UserProfileComponent } from './views/user-profile/user-profile/user-profile.component';
 
 
 
@@ -41,6 +42,7 @@ import { UserFacade } from './services/user/user.facade';
     HomeComponent,
     SignInComponent,
     AppNavComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
