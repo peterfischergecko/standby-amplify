@@ -14,7 +14,4 @@ The project consists mainly of an Angular Material single page application and a
 * amplify env pull --restore
 * ng serve
 
-see also: [AWS Amplify CLI Quickstart Guide]
-
-[AWS Amplify CLI Setup]: <https://aws-amplify.github.io/docs/>
-[AWS Amplify CLI Quickstart Guide]: <https://aws-amplify.github.io/docs/cli-toolchain/quickstart>
+[AWS Amplify CLI Setup]: <https://docs.amplify.aws/cli/start/install>
