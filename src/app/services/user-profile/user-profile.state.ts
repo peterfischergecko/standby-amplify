@@ -1,7 +1,7 @@
-import { IUserProfile } from 'src/app/models/user-profile';
+import { UserProfile } from 'src/app/models/user-profile';
 
 export class UserProfileState {
-    profile: IUserProfile;
+    profile: UserProfile;
     loading: boolean;
     error: any;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserProfileState } from './user-profile.state';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IUserProfile } from 'src/app/models/user-profile';
+import { UserProfile } from 'src/app/models/user-profile';
 import { map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { APIService, ListPersonsQuery, ListMembersQuery, GetTeamQuery } from 'src/app/API.service';
 import { Person } from 'src/app/models/person';
@@ -21,7 +21,7 @@ export class UserProfileFacade {
     private currentState = new BehaviorSubject<UserProfileState>(_state);
     private currentState$ = this.currentState.asObservable();
 
-    public profile$: Observable<IUserProfile> = this.currentState$.pipe(map(state => state.profile), distinctUntilChanged());
+    public profile$: Observable<UserProfile> = this.currentState$.pipe(map(state => state.profile), distinctUntilChanged());
     public loading$: Observable<boolean> = this.currentState$.pipe(map(state => state.loading), distinctUntilChanged());
     public error$: Observable<any> = this.currentState$.pipe(map(state => state.error), distinctUntilChanged());
 
@@ -33,7 +33,7 @@ export class UserProfileFacade {
     }
 
     async loadUserProfile(email: string) {
-        let profile: IUserProfile = {
+        let profile: UserProfile = {
             email: email,
             personId: null,
             firstName: null,

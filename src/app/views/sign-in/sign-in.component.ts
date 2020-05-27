@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from 'ngx-strongly-typed-forms';
 import { Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PasswordErrorStateMatcher } from 'src/app/helper/password-error-state-matcher';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ISignInUser } from 'src/app/models/signinuser';
+import { SignInUser } from 'src/app/models/signinuser';
 import { UserFacade } from 'src/app/services/user/user.facade';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,7 +21,7 @@ export enum SignInErrorResponse {
     styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit, OnDestroy {
-    signInForm: FormGroup<ISignInUser>;
+    signInForm: FormGroup<SignInUser>;
 
     hide = true;
     newPasswordRequired = false;
@@ -36,10 +35,9 @@ export class SignInComponent implements OnInit, OnDestroy {
 
     constructor(
         public userFacade: UserFacade,
-        private router: Router,
         private formBuilder: FormBuilder,
         private notificationService: NotificationService) {
-        this.signInForm = this.formBuilder.group<ISignInUser>({
+        this.signInForm = this.formBuilder.group<SignInUser>({
             email: new FormControl('', Validators.required),
             password: new FormControl('', [Validators.required, Validators.minLength(8)])
         });
@@ -63,7 +61,7 @@ export class SignInComponent implements OnInit, OnDestroy {
             .subscribe((required) => {
                 this.newPasswordRequired = required;
                 if (required) {
-                    this.signInForm = this.formBuilder.group<ISignInUser>({
+                    this.signInForm = this.formBuilder.group<SignInUser>({
                         email: new FormControl(this.emailInput.value , [Validators.required]),
                         password: new FormControl('', [Validators.required, Validators.minLength(8)]),
                         confirmPassword: new FormControl('', [Validators.required])
@@ -110,7 +108,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         }
     }
 
-    passwordsEqual(group: FormGroup<ISignInUser>) {
+    passwordsEqual(group: FormGroup<SignInUser>) {
         const pass = group.controls.password.value;
         const confirmPass = group.controls.confirmPassword.value;
 
