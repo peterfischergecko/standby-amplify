@@ -4,5 +4,6 @@ export interface UserProfile {
     firstName: string,
     lastName: string,
     memberId?: string,
-    teamId?: string
+    teamId?: string,
+    teamName?: string
 }

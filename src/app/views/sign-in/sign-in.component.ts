@@ -80,7 +80,7 @@ export class SignInComponent implements OnInit, OnDestroy {
         }
 
         if (this.emailInput.hasError('required')) {
-            return 'An email is required';
+            return 'An email is required.';
         }
     }
 

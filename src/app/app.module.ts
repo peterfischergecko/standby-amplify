@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -29,13 +30,8 @@ import { HomeComponent } from './views/home/home.component';
 import { AppNavComponent } from './app-nav/app-nav.component';
 
 import { UserFacade } from './services/user/user.facade';
-import { UserProfileComponent } from './views/user-profile/user-profile/user-profile.component';
+import { UserProfileComponent } from './views/user-profile/user-profile.component';
 import { UserProfileFacade } from './services/user-profile/user-profile.facade';
-
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -52,6 +48,7 @@ import { UserProfileFacade } from './services/user-profile/user-profile.facade';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatAutocompleteModule,
     MatCardModule,
     MatIconModule,
     MatInputModule,
