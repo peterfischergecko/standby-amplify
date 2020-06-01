@@ -91,4 +91,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return team && team.name ? team.name : '';
   }
 
+  public onSave() {
+    this.userProfileFacade.saveUserProfile(this.userProfileForm.value);
+  }
+
 }

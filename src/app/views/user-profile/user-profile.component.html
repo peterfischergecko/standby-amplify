@@ -26,16 +26,19 @@
                     <mat-error *ngIf="!lastNameInput.valid">{{getLastNameInputError()}}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <input matInput type="text" placeholder="Team" formControlName="teamName" [matAutocomplete]="auto" required>
+                    <input matInput type="text" placeholder="Team" formControlName="teamId" [matAutocomplete]="auto" required>
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                        <mat-option *ngFor="let team of allTeams | async" [value]=team.name >
-                            {{team.name}}
+                        <mat-option *ngFor="let team of allTeams | async" [value]=team.id >
+                            {{team.id}}
                         </mat-option>
                     </mat-autocomplete>
                     <mat-hint *ngIf="!teamNameInput.value">Choose a team</mat-hint>
                     <mat-error *ngIf="!teamNameInput.valid">{{getTeamNameInputError()}}</mat-error>
-                </mat-form-field>
+                </mat-form-field>                
             </mat-card-content>
+            <mat-card-actions>
+                <button mat-button (click)="onSave()">Save</button> 
+            </mat-card-actions>
         </mat-card>
     </form>    
 </div>

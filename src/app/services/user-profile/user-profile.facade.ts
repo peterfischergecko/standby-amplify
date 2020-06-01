@@ -3,7 +3,7 @@ import { UserProfileState } from './user-profile.state';
 import { BehaviorSubject, Observable, from, EMPTY, of } from 'rxjs';
 import { UserProfile } from 'src/app/models/user-profile';
 import { map, mergeMap, distinctUntilChanged } from 'rxjs/operators';
-import { APIService, ListPersonsQuery, ListMembersQuery, GetTeamQuery, ListTeamsQuery } from 'src/app/API.service';
+import { APIService, ListPersonsQuery, ListMembersQuery, GetTeamQuery, ListTeamsQuery, CreatePersonMutation, UpdatePersonMutation, CreateMemberMutation, UpdateMemberMutation } from 'src/app/API.service';
 import { Person } from 'src/app/models/person';
 import { Member } from 'src/app/models/member';
 import { Team } from 'src/app/models/team';
@@ -45,7 +45,7 @@ export class UserProfileFacade {
             }),        
             mergeMap((person: Person) => {                
                 if(!!person) {
-                    profile = this.updatePerson(person.id, person.firstName, person.lastName, person.email, profile);
+                    profile = this.updatePersonInProfile(person.id, person.firstName, person.lastName, person.email, profile);
                     return this.loadMember(person.id)
                 } else {                    
                     this.updateState({..._userProfileState, teams, profile, loading: false});
@@ -54,7 +54,7 @@ export class UserProfileFacade {
             }),
             mergeMap((member: Member) => {
                 if(!!member) {
-                    profile = this.updateMember(member.id, profile);
+                    profile = this.updateMemberInProfile(member.id, profile);
                     return this.loadTeam(member.teamId);
                 } else {
                     this.updateState({..._userProfileState, teams, profile, loading: false});
@@ -63,10 +63,131 @@ export class UserProfileFacade {
             }),             
             ).subscribe((team: Team) => {
                 if(!!team) {
-                    profile = this.updateTeam(team.id, team.name, profile);
+                    profile = this.updateTeamInProfile(team.id, team.name, profile);
                 }
                 this.updateState({..._userProfileState, teams, profile, loading: false});
             });        
+    }
+
+    saveUserProfile(profile: UserProfile): void {
+        this.setLoading();
+        this.createOrUpdatePerson({
+            id: profile.personId,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email
+        }).pipe(mergeMap((person: Person) => {
+            let m: Observable<Member> = EMPTY;
+            if(!!person) {
+                profile = this.updatePersonInProfile(person.id, person.firstName, person.lastName, person.email, profile);
+                if(!!profile.teamId) {
+                    m = this.createOrUpdateMember({id: profile.memberId, personId: profile.personId, teamId: profile.teamId});
+                } else {
+                    this.updateState({..._userProfileState, profile, loading: false});
+                }               
+            }
+            return m;
+        }),
+        mergeMap((member: Member) => {
+            let t: Observable<Team> = EMPTY
+            if(!!member) {
+                profile = this.updateMemberInProfile(member.id, profile);
+                t = this.loadTeam(member.teamId);
+            }
+            return t;
+        })        
+        ).subscribe((team: Team) => {
+            if(!!team) {
+                profile = this.updateTeamInProfile(team.id, team.name, profile);                
+            }
+            this.updateState({..._userProfileState, profile, loading: false});
+        });
+    }
+
+    private createOrUpdateMember(member: Member): Observable<Member> {
+        let savedMember$: Observable<Member> = EMPTY;
+        if(!!member) {
+            if(!!member.id) {
+                savedMember$ = this.updateMember(member);
+            } else {
+                savedMember$ = this.createMember(member);
+            }
+        }
+        return savedMember$;
+    }
+
+    private createMember(member: Member): Observable<Member> {
+        return from(this.apiService.CreateMember({personID: member.personId, teamID: member.teamId, name: 'default'}))
+        .pipe(map((m: CreateMemberMutation)=> {
+            let createdMember: Member = null;
+            if(!!m) {
+                createdMember = {
+                    id: m.id,
+                    personId: m.personID,
+                    teamId: m.teamID
+                }
+            }
+            return createdMember;
+        }));
+    }
+
+    private updateMember(member: Member): Observable<Member> {
+        return from(this.apiService.UpdateMember({id: member.id, personID: member.personId, teamID: member.teamId}))
+        .pipe(map((m: UpdateMemberMutation)=>{
+            let updatedMember: Member = null;
+            if(!!m) {
+                updatedMember = {
+                    id: m.id,
+                    personId: m.personID,
+                    teamId: m.teamID
+                }
+            }
+            return updatedMember;
+        }));
+    }
+
+    private createOrUpdatePerson(person: Person): Observable<Person> {
+        let savedPerson$: Observable<Person> = EMPTY;
+        if(!!person) {
+            if(!!person.id) {
+                savedPerson$ = this.updatePerson(person);
+            } else {
+                savedPerson$ = this.createPerson(person);
+            }
+        }
+        return savedPerson$;
+    }
+
+    private createPerson(person: Person): Observable<Person> {
+        return from(this.apiService.CreatePerson({firstname: person.firstName, lastname: person.lastName, email: person.email}))
+        .pipe(map((p: CreatePersonMutation) => {
+            let createdPerson: Person = null;
+            if(!!p) {
+                createdPerson = {
+                    id: p.id,
+                    firstName: p.firstname,
+                    lastName: p.lastname,
+                    email: p.email
+                }
+            }
+            return createdPerson;
+        }));
+    }
+
+    private updatePerson(person: Person): Observable<Person> {
+        return from(this.apiService.UpdatePerson({id: person.id, firstname: person.firstName, lastname: person.lastName, email: person.email}))
+        .pipe(map((p: UpdatePersonMutation) => {
+            let updatedPerson: Person = null;
+            if(!!p) {
+                updatedPerson = {
+                    id: p.id,
+                    firstName: p.firstname,
+                    lastName: p.lastname,
+                    email: p.email
+                }
+            }
+            return updatedPerson;
+        }));
     }
 
     private emptyProfile(userEmail: string): UserProfile {
@@ -81,7 +202,7 @@ export class UserProfileFacade {
         }
     }
 
-    private updatePerson(personId: string, email: string, firstName: string, lastName: string, profile: UserProfile): UserProfile {
+    private updatePersonInProfile(personId: string, email: string, firstName: string, lastName: string, profile: UserProfile): UserProfile {
         return {
             ...profile, 
             personId,
@@ -91,14 +212,14 @@ export class UserProfileFacade {
         }
     }
 
-    private updateMember(memberId: string, profile: UserProfile): UserProfile {
+    private updateMemberInProfile(memberId: string, profile: UserProfile): UserProfile {
         return {
             ...profile,
             memberId
         }
     }
 
-    private updateTeam(teamId: string, teamName: string, profile: UserProfile): UserProfile {
+    private updateTeamInProfile(teamId: string, teamName: string, profile: UserProfile): UserProfile {
         return {
             ...profile,
             teamId,
@@ -148,7 +269,16 @@ export class UserProfileFacade {
     }
 
     private loadTeam(teamId: string): Observable<Team> {        
-        return from(this.apiService.GetTeam(teamId));
+        return from(this.apiService.GetTeam(teamId)).pipe(map((t: GetTeamQuery) => {
+            let team: Team = null;
+            if(!!t) {
+                team = {
+                    id: t.id,
+                    name: t.name
+                };
+            }
+            return team;
+        }));
     }
 
     private updateState(state: UserProfileState) {
