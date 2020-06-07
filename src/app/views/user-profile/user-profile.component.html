@@ -12,29 +12,31 @@
                         User Profile
                     </mat-card-title>                    
                 </mat-card-header>
-                <mat-form-field appearance="outline">
-                    <input matInput type="email" placeholder="Email" formControlName="email" autocomplete="email" required readonly>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <input matInput placeholder="First Name" formControlName="firstName" required>
-                    <mat-hint *ngIf="!firstNameInput.value">Enter your first name</mat-hint>
-                    <mat-error *ngIf="!firstNameInput.valid">{{getFirstNameInputError()}}</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <input matInput placeholder="Last Name" formControlName="lastName" required>
-                    <mat-hint *ngIf="!lastNameInput.value">Enter your last name</mat-hint>
-                    <mat-error *ngIf="!lastNameInput.valid">{{getLastNameInputError()}}</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <input matInput type="text" placeholder="Team" formControlName="teamId" [matAutocomplete]="auto" required>
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                        <mat-option *ngFor="let team of allTeams | async" [value]=team.id >
-                            {{team.id}}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <mat-hint *ngIf="!teamNameInput.value">Choose a team</mat-hint>
-                    <mat-error *ngIf="!teamNameInput.valid">{{getTeamNameInputError()}}</mat-error>
-                </mat-form-field>                
+                <div formGroupName="person">
+                    <mat-form-field appearance="outline">
+                        <input matInput type="email" placeholder="Email" formControlName="email" autocomplete="email" required readonly>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="First Name" formControlName="firstName" required>
+                        <mat-hint *ngIf="!firstNameInput.value">Enter your first name</mat-hint>
+                        <mat-error *ngIf="!firstNameInput.valid">{{getFirstNameInputError()}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="Last Name" formControlName="lastName" required>
+                        <mat-hint *ngIf="!lastNameInput.value">Enter your last name</mat-hint>
+                        <mat-error *ngIf="!lastNameInput.valid">{{getLastNameInputError()}}</mat-error>
+                    </mat-form-field>
+                </div>                
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" placeholder="Team" formControlName="team" [matAutocomplete]="auto" required>
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let team of allTeams | async" [value]="team" >
+                                {{team.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-hint *ngIf="!teamNameInput.value">Choose a team</mat-hint>
+                        <mat-error *ngIf="!teamNameInput.valid">{{getTeamNameInputError()}}</mat-error>
+                    </mat-form-field>                                
             </mat-card-content>
             <mat-card-actions>
                 <button mat-button (click)="onSave()">Save</button> 

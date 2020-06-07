@@ -8,6 +8,8 @@ import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Team } from 'src/app/models/team';
 import { UserFacade } from 'src/app/services/user/user.facade';
+import { Person } from 'src/app/models/person';
+import { Member } from 'src/app/models/member';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,27 +20,35 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   userProfileForm: FormGroup<UserProfile>;
   onDestroy = new Subject();
 
-  get firstNameInput() { return this.userProfileForm.get('firstName'); }
-  get lastNameInput() { return this.userProfileForm.get('lastName'); }
-  get teamNameInput() { return this.userProfileForm.get('teamName'); }
+  get firstNameInput() { return this.userProfileForm.get('person').get('firstName'); }
+  get lastNameInput() { return this.userProfileForm.get('person').get('lastName'); }
+  get teamNameInput() { return this.userProfileForm.get('team').get('name'); }
   get allTeams() { return this.userProfileFacade.teams$; }
 
   constructor(private userFacade: UserFacade, private userProfileFacade: UserProfileFacade, private formBuilder: FormBuilder, private notificationService: NotificationService) {
     this.userProfileForm = this.formBuilder.group<UserProfile>({
-      personId: new FormControl(''),
-      email: new FormControl('', Validators.required),
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      memberId: new FormControl(''),
-      teamId: new FormControl(''),
-      teamName: new FormControl('', Validators.required),
+      person: this.formBuilder.group<Person>({
+        id: new FormControl(''),
+        email: new FormControl('', Validators.required),
+        firstName: new FormControl('', Validators.required),
+        lastName: new FormControl('', Validators.required),
+      }),
+      member: this.formBuilder.group<Member>({
+        id: new FormControl(''),
+        personId: new FormControl(''),
+        teamId: new FormControl(''),
+      }),
+      team: this.formBuilder.group<Team>({
+        id: new FormControl(''),
+        name: new FormControl('', Validators.required),
+      })      
     });
   }
 
   ngOnInit(): void {
     this.userProfileFacade.profile$
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(userProfile => {
+      .subscribe(userProfile => {        
         this.userProfileForm.patchValue({
           ...userProfile
         });
@@ -88,11 +98,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   public displayFn(team: Team): string {
-    return team && team.name ? team.name : '';
+    return team && team.name ? team.name : 'fehler';
   }
 
   public onSave() {
-    this.userProfileFacade.saveUserProfile(this.userProfileForm.value);
+    const profile: UserProfile = {
+      ...this.userProfileForm.value,
+      member: {
+        id: this.userProfileForm.value.member.id,
+        personId: this.userProfileForm.value.person.id,
+        teamId: this.userProfileForm.value.team.id
+      }
+    };    
+    this.userProfileFacade.saveUserProfile(profile);
   }
 
 }

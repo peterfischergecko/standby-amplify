@@ -1,9 +1,9 @@
+import { Team } from './team';
+import { Member } from './member';
+import { Person } from './person';
+
 export interface UserProfile {
-    personId?: string,
-    email: string,
-    firstName: string,
-    lastName: string,
-    memberId?: string,
-    teamId?: string,
-    teamName?: string
+    person: Person,    
+    member: Member,
+    team: Team,
 }

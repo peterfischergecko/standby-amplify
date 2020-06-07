@@ -45,7 +45,7 @@ export class UserProfileFacade {
             }),        
             mergeMap((person: Person) => {                
                 if(!!person) {
-                    profile = this.updatePersonInProfile(person.id, person.firstName, person.lastName, person.email, profile);
+                    profile = this.updatePersonInProfile(person, profile);
                     return this.loadMember(person.id)
                 } else {                    
                     this.updateState({..._userProfileState, teams, profile, loading: false});
@@ -54,7 +54,7 @@ export class UserProfileFacade {
             }),
             mergeMap((member: Member) => {
                 if(!!member) {
-                    profile = this.updateMemberInProfile(member.id, profile);
+                    profile = this.updateMemberInProfile(member, profile);
                     return this.loadTeam(member.teamId);
                 } else {
                     this.updateState({..._userProfileState, teams, profile, loading: false});
@@ -63,7 +63,7 @@ export class UserProfileFacade {
             }),             
             ).subscribe((team: Team) => {
                 if(!!team) {
-                    profile = this.updateTeamInProfile(team.id, team.name, profile);
+                    profile = this.updateTeamInProfile(team, profile);
                 }
                 this.updateState({..._userProfileState, teams, profile, loading: false});
             });        
@@ -72,16 +72,16 @@ export class UserProfileFacade {
     saveUserProfile(profile: UserProfile): void {
         this.setLoading();
         this.createOrUpdatePerson({
-            id: profile.personId,
-            firstName: profile.firstName,
-            lastName: profile.lastName,
-            email: profile.email
+            id: profile.person.id,
+            firstName: profile.person.firstName,
+            lastName: profile.person.lastName,
+            email: profile.person.email
         }).pipe(mergeMap((person: Person) => {
             let m: Observable<Member> = EMPTY;
             if(!!person) {
-                profile = this.updatePersonInProfile(person.id, person.firstName, person.lastName, person.email, profile);
-                if(!!profile.teamId) {
-                    m = this.createOrUpdateMember({id: profile.memberId, personId: profile.personId, teamId: profile.teamId});
+                profile = this.updatePersonInProfile(person, profile);
+                if(!!profile.member.teamId) {
+                    m = this.createOrUpdateMember({id: profile.member.id, personId: profile.person.id, teamId: profile.team.id});
                 } else {
                     this.updateState({..._userProfileState, profile, loading: false});
                 }               
@@ -91,14 +91,14 @@ export class UserProfileFacade {
         mergeMap((member: Member) => {
             let t: Observable<Team> = EMPTY
             if(!!member) {
-                profile = this.updateMemberInProfile(member.id, profile);
+                profile = this.updateMemberInProfile(member, profile);
                 t = this.loadTeam(member.teamId);
             }
             return t;
         })        
         ).subscribe((team: Team) => {
             if(!!team) {
-                profile = this.updateTeamInProfile(team.id, team.name, profile);                
+                profile = this.updateTeamInProfile(team, profile);                
             }
             this.updateState({..._userProfileState, profile, loading: false});
         });
@@ -192,38 +192,42 @@ export class UserProfileFacade {
 
     private emptyProfile(userEmail: string): UserProfile {
         return {
+            person: {
             email: userEmail,
-            personId: null,
+            id: null,
             firstName: null,
-            lastName: null,
-            memberId: null,
-            teamId: null,
-            teamName: null,
+            lastName: null, },
+            member: {
+                id: null,
+                personId: null,
+                teamId: null
+            },
+            team: {
+                id: null,
+                name: null
+            }
+
         }
     }
 
-    private updatePersonInProfile(personId: string, email: string, firstName: string, lastName: string, profile: UserProfile): UserProfile {
+    private updatePersonInProfile(person: Person, profile: UserProfile): UserProfile {
         return {
             ...profile, 
-            personId,
-            firstName,
-            lastName,
-            email
+            person
         }
     }
 
-    private updateMemberInProfile(memberId: string, profile: UserProfile): UserProfile {
+    private updateMemberInProfile(member: Member, profile: UserProfile): UserProfile {
         return {
             ...profile,
-            memberId
+            member
         }
     }
 
-    private updateTeamInProfile(teamId: string, teamName: string, profile: UserProfile): UserProfile {
+    private updateTeamInProfile(team: Team, profile: UserProfile): UserProfile {
         return {
             ...profile,
-            teamId,
-            teamName
+            team
         }
     }
 
