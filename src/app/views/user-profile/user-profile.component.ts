@@ -45,13 +45,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.userProfileFacade.profile$
       .pipe(takeUntil(this.onDestroy))
-      .subscribe(userProfile => {        
-        this.userProfileForm.patchValue({
-          ...userProfile
-        });
+      .subscribe((userProfile: UserProfile) => {
+        this.updateForm(userProfile);
       });
     
     this.userProfileFacade.error$
@@ -69,7 +67,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userProfileFacade.loadUserProfile(currentUser.attributes.email);
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.onDestroy.next();
   }
 
@@ -97,8 +95,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return error;
   }
 
-  public displayFn(team: Team): string {
-    return team && team.name ? team.name : 'fehler';
+  public onTeamSelect(team: Team) {
+    this.userProfileForm.get('team').patchValue({
+      ...team
+    });
   }
 
   public onSave() {
@@ -111,6 +111,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       }
     };    
     this.userProfileFacade.saveUserProfile(profile);
+  }
+
+  private updateForm(userProfile: UserProfile): void {
+    this.userProfileForm.patchValue({
+      ...userProfile
+    });
   }
 
 }
